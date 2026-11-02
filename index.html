@@ -277,8 +277,10 @@
       ? 'Đã gửi mã về ứng dụng. Trang này sẽ tự đóng; nếu không, bấm "Đóng trang này" để quay lại.'
       : 'Không gửi được mã về ứng dụng (trang ứng dụng đã bị đóng hoặc không liên kết). Bấm "Sao chép mã", quay lại ứng dụng rồi dán vào tab Nhập tay.\n[chẩn đoán] opener: '
         + (toApp() ? 'có' : 'KHÔNG') + ' · o=: ' + (APP_ORIGIN ? 'có' : 'KHÔNG') + ' · rid=: ' + (RID ? 'có' : 'KHÔNG');
-    $('done').classList.add('show');
-    if (sent) setTimeout(() => { try { window.close(); } catch (_) {} }, 600);
+    // Gửi được thì đóng tab ngay, không hiện màn hình kết quả. Màn hình đó chỉ hiện khi không gửi được
+    // (để sao chép mã) hoặc khi trình duyệt không cho tự đóng tab.
+    if (sent) { try { window.close(); } catch (_) {} setTimeout(() => $('done').classList.add('show'), 300); }
+    else $('done').classList.add('show');
   }
 
   $('startBtn').onclick = startCamera;
