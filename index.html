@@ -283,7 +283,9 @@
 
   $('startBtn').onclick = startCamera;
   // Tab do app mở bằng cú bấm của người dùng → tự bật camera luôn; bị từ chối thì startCamera hiện lại nút "Bật camera".
-  if (window.opener) startCamera();
+  // Điều kiện dùng ?o= (app luôn truyền) thay vì window.opener, vì tab mở từ khung Apps Script có thể mất opener.
+  // Ẩn màn hình "Bật camera" ngay; startCamera tự hiện lại nếu bị từ chối.
+  if (APP_ORIGIN || window.opener) { $('start').style.display = 'none'; startCamera(); }
   $('cancelBtn').onclick = $('stopBtn').onclick = $('closeBtn').onclick = () => {
     stopCamera();
     try { window.close(); } catch (_) {}
